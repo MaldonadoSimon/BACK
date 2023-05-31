@@ -1,0 +1,83 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    created.by: Symintelligent
+    support: soporte@symintelligent.com
+  labels:
+    app: ${moduleName}
+    env: ${environment}
+    app.kubernetes.io/name: ${moduleName}
+    app.kubernetes.io/version: v1.0
+    app.kubernetes.io/component: Api
+    app.kubernetes.io/part-of: ProyectoBase
+    app.kubernetes.io/managed-by: devops
+  name: ${moduleName}
+  namespace: ${namespace}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ${moduleName}
+  template:
+    metadata:
+      annotations:
+        created.by: Symintelligent
+        support: soporte@symintelligent.com
+      labels:
+        app: ${moduleName}
+        env: ${environment}
+        app.kubernetes.io/name: ${moduleName}
+        app.kubernetes.io/version: v1.0
+        app.kubernetes.io/component: Api
+        app.kubernetes.io/part-of: ProyectoBase
+        app.kubernetes.io/managed-by: devops
+    spec:
+      containers:
+        - image: docker-registry.default.svc:5000/${namespace}/${moduleName}:v${buildNumber}
+          imagePullPolicy: Always
+          name: app
+          resources:
+            limits:
+              memory: "100Mi"
+              cpu: "50m"
+            requests:
+              memory: "0Mi"
+              cpu: "0m"
+          env:
+            - name: FRAMEWORK_UTIL
+              value: ${FRAMEWORK_UTIL}
+            - name: URL_FRAMEWORK
+              value: ${URL_FRAMEWORK}
+            - name: TRACE_API
+              value: ${TRACE_API}
+            - name: LOG_LEVEL
+              value: ${LOG_LEVEL}
+            - name: VAR_NUMERICA_EJEMPLO
+              value: '${VAR_NUMERICA_EJEMPLO}'
+            - name: NODE_TLS_REJECT_UNAUTHORIZED
+              value: '${NODE_TLS_REJECT_UNAUTHORIZED}'
+#            - name: SECRETO
+#              valueFrom:
+#                secretKeyRef:
+#                  key: VALUE_SECRETO
+#                  name: KEY_SECRETO
+          ports:
+            - containerPort: ${containerPort}
+              protocol: TCP
+          livenessProbe:
+            failureThreshold: 3
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            successThreshold: 1
+            tcpSocket:
+              port: ${livenessProbetcpSocketPort}
+            timeoutSeconds: ${livenessTimeoutSeconds}
+          readinessProbe:
+            failureThreshold: 3
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            successThreshold: 1
+            tcpSocket:
+              port: ${readinessProbetcpSocketPort}
+            timeoutSeconds: ${readinessTimeoutSeconds}

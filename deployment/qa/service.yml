@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    created.by: Symintelligent
+    support: soporte@symintelligent.com
+  name: ${moduleName}
+  namespace: ${namespace}
+  labels:
+    app: ${moduleName}
+    env: ${environment}
+    app.kubernetes.io/name: ${moduleName}
+    app.kubernetes.io/version: v1.0
+    app.kubernetes.io/component: Api
+    app.kubernetes.io/part-of: ProyectoBase
+    app.kubernetes.io/managed-by: devops
+spec:
+  type: ClusterIP
+  ports:
+   - name: ${port}-tcp
+     port: ${port}
+     protocol: TCP
+     targetPort: ${targetPort}
+  selector:
+    app: ${moduleName}

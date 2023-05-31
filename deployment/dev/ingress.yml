@@ -1,0 +1,33 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    created.by: Symintelligent
+    support: soporte@symintelligent.com
+    kubernetes.io/ingress.class: nginx-internal
+    nginx.ingress.kubernetes.io/proxy-body-size: 5m
+    nginx.ingress.kubernetes.io/proxy-connect-timeout: "180"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "180"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "180"
+  name: ${moduleName}
+  namespace: ${namespace}
+  labels:
+      app: ${moduleName}
+      env: ${environment}
+      app.kubernetes.io/name: ${moduleName}
+      app.kubernetes.io/version: v1.0
+      app.kubernetes.io/component: Api
+      app.kubernetes.io/part-of: ProyectoBase
+      app.kubernetes.io/managed-by: devops
+spec:
+  rules:
+  - host: ${RUTA}
+    http:
+      paths:
+      - path: ${PATH}
+        pathType: Prefix
+        backend:
+          service:
+            name: ${moduleName}
+            port:
+              number: ${port}

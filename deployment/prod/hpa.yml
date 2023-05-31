@@ -1,0 +1,32 @@
+apiVersion: autoscaling/v2beta1
+kind: HorizontalPodAutoscaler
+metadata:
+  annotations:
+    created.by: Symintelligent
+    support: soporte@symintelligent.com
+  labels:
+    app: ${moduleName}
+    env: ${environment}
+    app.kubernetes.io/name: ${moduleName}
+    app.kubernetes.io/version: v1.0
+    app.kubernetes.io/component: back
+    app.kubernetes.io/part-of: ${moduleName}
+    app.kubernetes.io/managed-by: devops
+  name: ${moduleName}
+  namespace: ${namespace}
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: ${moduleName}
+  minReplicas: 1
+  maxReplicas: 5
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        targetAverageUtilization: 90
+    - type: Resource
+      resource:
+        name: memory
+        targetAverageUtilization: 85

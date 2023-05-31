@@ -1,0 +1,24 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: ${moduleName}
+  annotations:
+    created.by: Symintelligent
+    support: soporte@symintelligent.com
+  labels:
+      app: ${moduleName}
+      env: ${environment}
+      app.kubernetes.io/name: ${moduleName}
+      app.kubernetes.io/version: v1.0
+      app.kubernetes.io/component: Api
+      app.kubernetes.io/part-of: ProyectoBase
+      app.kubernetes.io/managed-by: devops
+spec:
+  rules:
+  - host: ${RUTA}
+    http:
+      paths:
+      - path: ${PATH}
+        backend:
+          serviceName: ${moduleName}
+          servicePort: ${port}
